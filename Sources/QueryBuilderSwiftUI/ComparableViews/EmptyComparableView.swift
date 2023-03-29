@@ -7,23 +7,23 @@
 
 import SwiftUI
 
-class EmptyComparableViewModel: ComparableViewModel {
-    func getValue() -> Int { 1 }
+public class EmptyComparableViewModel: ComparableViewModel {
+    public func getValue() -> Int { 1 }
     
-    func createView() -> EmptyComparableView {
+    public func createView() -> EmptyComparableView {
         EmptyComparableView(viewModel: self)
     }
 }
 
 @available(iOS 13.0, *)
-struct EmptyComparableView: ComparableView {
-    var viewModel: EmptyComparableViewModel
+public struct EmptyComparableView: ComparableView {
+    public var viewModel: EmptyComparableViewModel
     
-    var body: some View {
+    public var body: some View {
         Text("Empty")
     }
     
-    static func create(_ viewModel: EmptyComparableViewModel) -> EmptyComparableView {
+    public static func create(_ viewModel: EmptyComparableViewModel) -> EmptyComparableView {
         EmptyComparableView(viewModel: viewModel)
     }
 }

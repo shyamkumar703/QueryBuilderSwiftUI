@@ -22,7 +22,7 @@ public protocol ComparableViewModel: AnyObject {
     func getValue() -> ValueType
 }
 
-final class BoolComparableViewModel: ObservableObject, ComparableViewModel {
+public final class BoolComparableViewModel: ObservableObject, ComparableViewModel {
     @Published var value: Bool = true
     
     init(value: Bool?) {
@@ -31,15 +31,15 @@ final class BoolComparableViewModel: ObservableObject, ComparableViewModel {
         }
     }
     
-    func getValue() -> Bool { return value }
+    public func getValue() -> Bool { return value }
     
-    func createView() -> BoolComparableView { BoolComparableView(viewModel: self) }
+    public func createView() -> BoolComparableView { BoolComparableView(viewModel: self) }
 }
 
-struct BoolComparableView: ComparableView {
-    @ObservedObject var viewModel: BoolComparableViewModel
+public struct BoolComparableView: ComparableView {
+    @ObservedObject public var viewModel: BoolComparableViewModel
     
-    var body: some View {
+    public var body: some View {
         Text(viewModel.value ? "true": "false")
             .modifier(InsetText(color: .red))
             .onTapGesture {
@@ -47,7 +47,7 @@ struct BoolComparableView: ComparableView {
             }
     }
     
-    static func create(_ viewModel: BoolComparableViewModel) -> BoolComparableView {
+    public static func create(_ viewModel: BoolComparableViewModel) -> BoolComparableView {
         BoolComparableView(viewModel: viewModel)
     }
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class StringComparableViewModel: ObservableObject, ComparableViewModel {
+public class StringComparableViewModel: ObservableObject, ComparableViewModel {
     @Published var value: String = "A"
     var options: [(any IsComparable)]
     let alphabet: [String] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
@@ -32,9 +32,9 @@ class StringComparableViewModel: ObservableObject, ComparableViewModel {
         self.options = options
     }
     
-    func getValue() -> String { return value }
+    public func getValue() -> String { return value }
     
-    func createView() -> StringComparableView { StringComparableView(viewModel: self) }
+    public func createView() -> StringComparableView { StringComparableView(viewModel: self) }
     
     func onAppear() {
         if !wasValueSet {
@@ -44,10 +44,10 @@ class StringComparableViewModel: ObservableObject, ComparableViewModel {
     
 }
 
-struct StringComparableView: ComparableView {
-    @ObservedObject var viewModel: StringComparableViewModel
+public struct StringComparableView: ComparableView {
+    @ObservedObject public var viewModel: StringComparableViewModel
     
-    var body: some View {
+    public var body: some View {
         Menu(
             content: {
                 ForEach(viewModel.displayOptions.filter({ $0 != viewModel.value}).sorted(), id: \.self) { value in
@@ -72,7 +72,7 @@ struct StringComparableView: ComparableView {
         }
     }
     
-    static func create(_ viewModel: StringComparableViewModel) -> StringComparableView {
+    public static func create(_ viewModel: StringComparableViewModel) -> StringComparableView {
         return StringComparableView(viewModel: viewModel)
     }
 }

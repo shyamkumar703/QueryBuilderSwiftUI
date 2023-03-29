@@ -30,7 +30,7 @@ public protocol IsComparable: Codable {
 }
 
 extension IsComparable {
-    func getValidComparators() -> [Comparator] { Comparator.allCases }
+    public func getValidComparators() -> [Comparator] { Comparator.allCases }
 }
 
 public enum Comparator: String, CaseIterable, Codable {

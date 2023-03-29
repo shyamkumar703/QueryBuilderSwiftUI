@@ -8,7 +8,7 @@
 import SwiftUI
 
 @available(iOS 13.0, *)
-final class DateComparableViewModel: ObservableObject, ComparableViewModel {
+public final class DateComparableViewModel: ObservableObject, ComparableViewModel {
     @Published var value: Date = Date()
     
     init(value: Date?) {
@@ -17,17 +17,17 @@ final class DateComparableViewModel: ObservableObject, ComparableViewModel {
         }
     }
     
-    func getValue() -> Date { return value }
+    public func getValue() -> Date { return value }
     
-    func createView() -> DateComparableView { DateComparableView(viewModel: self) }
+    public func createView() -> DateComparableView { DateComparableView(viewModel: self) }
 }
 
 @available(iOS 16.0, *)
-struct DateComparableView: ComparableView {
-    @ObservedObject var viewModel: DateComparableViewModel
+public struct DateComparableView: ComparableView {
+    @ObservedObject public var viewModel: DateComparableViewModel
     @State private var shouldShowSheet: Bool = false
     
-    var body: some View {
+    public var body: some View {
         Text(viewModel.value.formatted())
             .modifier(InsetText(color: .red))
             .onTapGesture { shouldShowSheet.toggle() }
@@ -44,7 +44,7 @@ struct DateComparableView: ComparableView {
             }
     }
     
-    static func create(_ viewModel: DateComparableViewModel) -> DateComparableView {
+    public static func create(_ viewModel: DateComparableViewModel) -> DateComparableView {
         return DateComparableView(viewModel: viewModel)
     }
 }
