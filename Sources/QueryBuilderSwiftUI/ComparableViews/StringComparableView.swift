@@ -15,7 +15,7 @@ public class StringComparableViewModel: ObservableObject, ComparableViewModel {
     var displayOptions: [String] {
         if let options = options as? [String],
            !options.isEmpty {
-            return options
+            return options.unique
         } else {
             return alphabet
         }

@@ -22,7 +22,7 @@ protocol AnyQueryNode: AnyObject {
     func serialize() -> SerializedQueryNode
 }
 
-public protocol IsComparable: Codable {
+public protocol IsComparable: Codable, Equatable {
     associatedtype ViewModelType: ComparableViewModel
     func evaluate(comparator: Comparator, against value: any IsComparable) -> Bool
     func translateOption() -> any IsComparable
