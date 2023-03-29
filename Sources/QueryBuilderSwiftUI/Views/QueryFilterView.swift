@@ -29,6 +29,11 @@ public struct QueryFilterView<QueryableElement: Queryable>: View {
     @Binding var allItems: [QueryableElement]
     @Binding var filteredItems: [QueryableElement]?
     
+    public init(allItems: Binding<[QueryableElement]>, filteredItems: Binding<[QueryableElement]?>) {
+        self._allItems = allItems
+        self._filteredItems = filteredItems
+    }
+    
     public var body: some View {
         Menu(
             content: {
