@@ -22,7 +22,11 @@ class QueryPredicateViewModel<QueryableElement: Queryable>: ObservableObject, Id
     @Published var showCompanionView: Bool = false
     
     var validComparators: [Comparator] {
-        Comparator.validComparators(for: comparatorView.viewModel.getValue())
+        if let type = QueryableElement.queryableParameters[queryableParam] {
+            return type.getValidComparators()
+        } else {
+            return Comparator.allCases
+        }
     }
     
     private var cachedVMs = [String: any ComparableViewModel]()
@@ -44,7 +48,7 @@ class QueryPredicateViewModel<QueryableElement: Queryable>: ObservableObject, Id
     }
     
     var options: [any IsComparable] {
-        elements.compactMap({ $0[keyPath: queryableParam] as? (any IsComparable) })
+        elements.compactMap({ ($0[keyPath: queryableParam] as? (any IsComparable))?.translateOption() })
     }
     
     init(elements: [QueryableElement]) {

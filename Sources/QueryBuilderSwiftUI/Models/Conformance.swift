@@ -31,7 +31,7 @@ extension Comparable where Self: IsComparable {
 }
 
 extension Bool: IsComparable {
-    public func getValidComparators() -> [Comparator] {
+    public static func getValidComparators() -> [Comparator] {
         [.equal, .notEqual]
     }
     

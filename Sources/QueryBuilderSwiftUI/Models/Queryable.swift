@@ -25,12 +25,14 @@ protocol AnyQueryNode: AnyObject {
 public protocol IsComparable: Codable {
     associatedtype ViewModelType: ComparableViewModel
     func evaluate(comparator: Comparator, against value: any IsComparable) -> Bool
-    func getValidComparators() -> [Comparator]
+    func translateOption() -> any IsComparable
+    static func getValidComparators() -> [Comparator]
     static func createAssociatedViewModel(options: [(any IsComparable)], startingValue: (any IsComparable)?) -> ViewModelType
 }
 
 extension IsComparable {
-    public func getValidComparators() -> [Comparator] { Comparator.allCases }
+    public static func getValidComparators() -> [Comparator] { Comparator.allCases }
+    public func translateOption() -> any IsComparable { return self }
 }
 
 public enum Comparator: String, CaseIterable, Codable {
@@ -40,11 +42,6 @@ public enum Comparator: String, CaseIterable, Codable {
     case greaterThanOrEqual = "greater than or equal to"
     case equal = "equal to"
     case notEqual = "not equal to"
-    
-    static func validComparators(for value: any IsComparable) -> [Comparator] {
-        if value as? Bool != nil { return [.notEqual, .equal] }
-        return Self.allCases
-    }
 }
 
 enum QueryEval: String, Codable {
