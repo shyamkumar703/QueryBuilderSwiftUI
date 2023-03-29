@@ -25,7 +25,7 @@ public protocol ComparableViewModel: AnyObject {
 public final class BoolComparableViewModel: ObservableObject, ComparableViewModel {
     @Published var value: Bool = true
     
-    init(value: Bool?) {
+    public init(value: Bool?) {
         if let value {
             self.value = value
         }

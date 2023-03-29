@@ -23,7 +23,7 @@ public class StringComparableViewModel: ObservableObject, ComparableViewModel {
     
     var wasValueSet: Bool = false
     
-    init(value: String?, options: [(any IsComparable)]) {
+    public init(value: String?, options: [(any IsComparable)]) {
         if let value {
             self.value = value
             wasValueSet = true

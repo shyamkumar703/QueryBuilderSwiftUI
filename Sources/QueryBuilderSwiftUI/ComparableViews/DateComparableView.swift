@@ -11,7 +11,7 @@ import SwiftUI
 public final class DateComparableViewModel: ObservableObject, ComparableViewModel {
     @Published var value: Date = Date()
     
-    init(value: Date?) {
+    public init(value: Date?) {
         if let value {
             self.value = value
         }
