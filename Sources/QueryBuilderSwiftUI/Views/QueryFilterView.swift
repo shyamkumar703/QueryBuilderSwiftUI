@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct QueryFilterView<QueryableElement: Queryable>: View {
+public struct QueryFilterView<QueryableElement: Queryable>: View {
     var filterOptions: [[FilterOptions]] {
         var queryOptions = [[FilterOptions]]()
         let options: [FilterOptions] = QueryBuilderSDK.fetchFilters(for: QueryableElement.self).map({ FilterOptions.query($0) })
@@ -29,7 +29,7 @@ struct QueryFilterView<QueryableElement: Queryable>: View {
     @Binding var allItems: [QueryableElement]
     @Binding var filteredItems: [QueryableElement]?
     
-    var body: some View {
+    public var body: some View {
         Menu(
             content: {
                 Section { viewForFilterOption(index: 0) }

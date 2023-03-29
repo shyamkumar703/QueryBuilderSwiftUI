@@ -8,13 +8,13 @@
 import SwiftUI
 
 @available(iOS 13.0, *)
-protocol ComparableView: View {
+public protocol ComparableView: View {
     associatedtype ViewModelType: ComparableViewModel
     var viewModel: ViewModelType { get }
     static func create(_ viewModel: ViewModelType) -> Self
 }
 
-protocol ComparableViewModel: AnyObject {
+public protocol ComparableViewModel: AnyObject {
     associatedtype ValueType: IsComparable
     associatedtype ViewType: ComparableView
     

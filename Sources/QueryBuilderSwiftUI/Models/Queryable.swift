@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-protocol Queryable: AnyObject {
+public protocol Queryable: AnyObject {
     static var queryableParameters: [PartialKeyPath<Self>: any IsComparable.Type] { get set }
     static func stringFor(_ keypath: PartialKeyPath<Self>) -> String
     static func keypathFor(_ string: String) throws -> PartialKeyPath<Self>
@@ -22,7 +22,7 @@ protocol AnyQueryNode: AnyObject {
     func serialize() -> SerializedQueryNode
 }
 
-protocol IsComparable: Codable {
+public protocol IsComparable: Codable {
     associatedtype ViewModelType: ComparableViewModel
     func evaluate(comparator: Comparator, against value: any IsComparable) -> Bool
     func getValidComparators() -> [Comparator]
@@ -33,7 +33,7 @@ extension IsComparable {
     func getValidComparators() -> [Comparator] { Comparator.allCases }
 }
 
-enum Comparator: String, CaseIterable, Codable {
+public enum Comparator: String, CaseIterable, Codable {
     case less = "less than"
     case greater = "greater than"
     case lessThanOrEqual = "less than or equal to"

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class QueryBuilderSDK {
+public class QueryBuilderSDK {
     private static var internalComparableTypes: [(any IsComparable.Type)] = [
         Date.self,
         String.self,
@@ -17,8 +17,14 @@ class QueryBuilderSDK {
         Bool.self
     ]
     
+    private static var externalComparableTypes: [(any IsComparable.Type)] = []
+    
+    public static func setComparableTypes(to array: [(any IsComparable.Type)]) {
+        self.externalComparableTypes = array
+    }
+    
     static func anyComparable(from data: Data) throws -> (any IsComparable) {
-        for comparableType in internalComparableTypes {
+        for comparableType in (internalComparableTypes + externalComparableTypes) {
             if let castType = try? JSONDecoder().decode(comparableType, from: data) {
                 return castType
             }
