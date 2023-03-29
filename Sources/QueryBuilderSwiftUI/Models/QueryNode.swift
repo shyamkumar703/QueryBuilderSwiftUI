@@ -48,10 +48,11 @@ class QueryNode<U: Queryable>: AnyQueryNode, Identifiable {
             // TODO: - Error handle
             return false
         }
-        guard let objectValue = obj[keyPath: objectKeyPath] as? (any IsComparable) else {
+        guard let objectValueRaw = obj[keyPath: objectKeyPath] as? (any IsComparable) else {
             // TODO: - Error handle
             return false
         }
+        let objectValue = objectValueRaw.translateOption()
         let currentNodeValue = objectValue.evaluate(comparator: comparator, against: compareToValue)
         guard let link else { return currentNodeValue }
         switch link {
