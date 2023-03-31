@@ -10,7 +10,10 @@ import Foundation
 extension Comparable where Self: IsComparable {
     public func evaluate(comparator: Comparator, against value: any IsComparable) -> Bool {
         guard let value = value as? Self else {
-            // TODO: - Throw error here
+            Logger.log(
+                "Value \(value) passed into `evaluate` is not a \(String(describing: type(of: self))), returning false",
+                severity: .error
+            )
             return false
         }
         switch comparator {
@@ -37,22 +40,22 @@ extension Bool: IsComparable {
     
     public func evaluate(comparator: Comparator, against value: any IsComparable) -> Bool {
         guard let value = value as? Bool else {
-            // TODO: - Throw error here
+            Logger.log("Value \(value) passed into `evaluate` is not a boolean, returning false", severity: .error)
             return false
         }
-        // TODO: - Replace print statements with logs
+
         switch comparator {
         case .less:
-            print("Bool comparison does not support <, running != instead")
+            Logger.log("Bool comparison does not support <, running != instead", severity: .warning)
             return self != value
         case .greater:
-            print("Bool comparsion does not support >, running != instead")
+            Logger.log("Bool comparsion does not support >, running != instead", severity: .warning)
             return self != value
         case .lessThanOrEqual:
-            print("Bool comparison does not support <=, running == instead")
+            Logger.log("Bool comparison does not support <=, running == instead", severity: .warning)
             return self == value
         case .greaterThanOrEqual:
-            print("Bool comparison does not support >=, running == instead")
+            Logger.log("Bool comparison does not support >=, running == instead", severity: .warning)
             return self == value
         case .equal:
             return self == value

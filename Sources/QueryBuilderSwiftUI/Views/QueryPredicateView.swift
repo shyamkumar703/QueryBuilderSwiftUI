@@ -42,7 +42,10 @@ class QueryPredicateViewModel<QueryableElement: Queryable>: ObservableObject, Id
                 return vm.createView()
             }
         } else {
-            // TODO: - Error-handle appropriately
+            Logger.log(
+                "Issue encountered when attempting to create a ComparableView, showing `EmptyComparableView instead",
+                severity: .warning
+            )
             return EmptyComparableViewModel().createView()
         }
     }

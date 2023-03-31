@@ -66,7 +66,7 @@ class QueryBuilderViewModel<QueryableElement: Queryable>: ObservableObject {
         case .predicate(let predicateView):
             node = predicateView.createQueryNode()
         default:
-            // TODO: - Error handle appropriately
+            Logger.log("Top-level node in query is not a predicate, stopping execution", severity: .error)
             return
         }
         
@@ -77,13 +77,13 @@ class QueryBuilderViewModel<QueryableElement: Queryable>: ObservableObject {
                 node?.addNode(node: qpv.createQueryNode(), connectWith: cvm.queryEval)
                 currentIndex += 1
             } else {
-                // TODO: - Error handle appropriately
+                Logger.log("Found invalid query in QueryBuilder, stopping execution", severity: .error)
                 return
             }
         }
         
         guard let node else {
-            // TODO: - Error-handle appropriately here
+            Logger.log("Attempted to save empty query, stopping execution", severity: .error)
             return
         }
         
@@ -103,8 +103,7 @@ class QueryBuilderViewModel<QueryableElement: Queryable>: ObservableObject {
             }
             
         } catch {
-            // TODO: - Error handle appropriately
-            print(error)
+            Logger.log("Error \(error) encountered while attempting to save query", severity: .error)
         }
     }
     

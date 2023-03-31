@@ -45,11 +45,17 @@ public class QueryNode<U: Queryable>: AnyQueryNode, Identifiable {
     
     func evaluate(_ obj: any Queryable) -> Bool {
         guard let obj = obj as? U else {
-            // TODO: - Error handle
+            Logger.log(
+                "Type of Queryable object \(obj) passed to `evaluate` does not match expected type \(String(describing: U.self)), returning false",
+                severity: .error
+            )
             return false
         }
         guard let objectValueRaw = obj[keyPath: objectKeyPath] as? (any IsComparable) else {
-            // TODO: - Error handle
+            Logger.log(
+                "Type of object at keypath \(objectKeyPath) of object type \(String(describing: U.self)) does not conform to `IsComparable`, returning false",
+                severity: .error
+            )
             return false
         }
         let objectValue = objectValueRaw.translateOption()
@@ -74,15 +80,12 @@ public class QueryNode<U: Queryable>: AnyQueryNode, Identifiable {
     }
     
     private func addLink(with node: AnyQueryNode, link: QueryLink) {
-        if node.link != nil {
-            switch node.link {
+        if let link = node.link {
+            switch link {
             case .and(let node):
                 addLink(with: node, link: link)
             case .or(let node):
                 addLink(with: node, link: link)
-            case .none:
-                // TODO: - Error handling
-                return
             }
         } else {
             node.link = link
