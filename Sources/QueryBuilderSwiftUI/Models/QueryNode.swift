@@ -7,13 +7,13 @@
 
 import Foundation
 
-class QueryNode<U: Queryable>: AnyQueryNode, Identifiable {
+public class QueryNode<U: Queryable>: AnyQueryNode, Identifiable {
     var comparator: Comparator
     var compareToValue: any IsComparable
     var comparableObject: U.Type
     var objectKeyPath: PartialKeyPath<U>
     var link: QueryLink?
-    var id: String = UUID().uuidString
+    public var id: String = UUID().uuidString
     
     init(comparator: Comparator, compareToValue: any IsComparable, comparableObject: U.Type, objectKeyPath: PartialKeyPath<U>) {
         self.comparator = comparator

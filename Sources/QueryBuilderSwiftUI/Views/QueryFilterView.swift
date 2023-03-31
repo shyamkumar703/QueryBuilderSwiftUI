@@ -22,16 +22,17 @@ public struct QueryFilterView<QueryableElement: Queryable>: View {
         return queryOptions
     }
     
-    @State private var currentFilter: (String, QueryNode<QueryableElement>)? = nil
     @State private var showFilterSheet: Bool = false
     @State private var showEditFilterSheet: Bool = false
     
     @Binding var allItems: [QueryableElement]
     @Binding var filteredItems: [QueryableElement]?
+    @Binding private var currentFilter: (String, QueryNode<QueryableElement>)?
     
-    public init(allItems: Binding<[QueryableElement]>, filteredItems: Binding<[QueryableElement]?>) {
+    public init(allItems: Binding<[QueryableElement]>, filteredItems: Binding<[QueryableElement]?>, currentFilter: Binding<(String, QueryNode<QueryableElement>)?>) {
         self._allItems = allItems
         self._filteredItems = filteredItems
+        self._currentFilter = currentFilter
     }
     
     public var body: some View {
