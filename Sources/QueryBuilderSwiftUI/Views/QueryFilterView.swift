@@ -51,6 +51,9 @@ public struct QueryFilterView<QueryableElement: Queryable>: View {
                 }
             }
         )
+        .transaction { txn in
+            txn.animation = nil
+        }
         .sheet(isPresented: $showFilterSheet) {
             QueryBuilderViewModel<QueryableElement>(
                 currentFilter: $currentFilter,
