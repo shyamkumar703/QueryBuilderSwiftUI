@@ -80,18 +80,13 @@ extension String: IsComparable {
     }
 }
 extension Int: IsComparable {
-    public static func createAssociatedViewModel(options: [(any IsComparable)], startingValue: (any IsComparable)?) -> EmptyComparableViewModel {
-        EmptyComparableViewModel()
+    public static func createAssociatedViewModel(options: [(any IsComparable)], startingValue: (any IsComparable)?) -> IntComparableViewModel {
+        IntComparableViewModel(value: startingValue as? Int, options: options)
     }
 }
 extension Double: IsComparable {
-    public static func createAssociatedViewModel(options: [(any IsComparable)], startingValue: (any IsComparable)?) -> EmptyComparableViewModel {
-        EmptyComparableViewModel()
-    }
-}
-extension Float: IsComparable {
-    public static func createAssociatedViewModel(options: [(any IsComparable)], startingValue: (any IsComparable)?) -> EmptyComparableViewModel {
-        EmptyComparableViewModel()
+    public static func createAssociatedViewModel(options: [(any IsComparable)], startingValue: (any IsComparable)?) -> DoubleComparableViewModel {
+        DoubleComparableViewModel(value: startingValue as? Double, options: options)
     }
 }
 

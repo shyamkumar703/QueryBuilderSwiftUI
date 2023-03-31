@@ -13,7 +13,6 @@ public class QueryBuilderSDK {
         String.self,
         Int.self,
         Double.self,
-        Float.self,
         Bool.self
     ]
     
