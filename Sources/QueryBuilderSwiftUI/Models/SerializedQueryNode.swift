@@ -13,6 +13,7 @@ final class SerializedQueryNode: Codable {
     var objectKeyPath: String
     var link: QueryEval?
     var linkedNode: SerializedQueryNode?
+    var valueTypeString: String
     
     init(comparator: Comparator, compareToValue: any IsComparable, objectKeyPath: String, link: QueryEval?, linkedNode: SerializedQueryNode?) {
         self.comparator = comparator
@@ -20,13 +21,15 @@ final class SerializedQueryNode: Codable {
         self.objectKeyPath = objectKeyPath
         self.link = link
         self.linkedNode = linkedNode
+        self.valueTypeString = String(describing: type(of: compareToValue))
     }
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         comparator = try values.decode(Comparator.self, forKey: .comparator)
+        valueTypeString = try values.decode(String.self, forKey: .valueTypeString)
         let compareToValueIntermediate = try values.decode(Data.self, forKey: .compareToValue)
-        compareToValue = try QueryBuilderSDK.anyComparable(from: compareToValueIntermediate)
+        compareToValue = try QueryBuilderSDK.anyComparable(from: compareToValueIntermediate, type: valueTypeString)
         objectKeyPath = try values.decode(String.self, forKey: .objectKeyPath)
         link = try? values.decode(QueryEval?.self, forKey: .link)
         if link != nil {
@@ -40,6 +43,7 @@ final class SerializedQueryNode: Codable {
         let valueData = try JSONEncoder().encode(compareToValue)
         try container.encode(valueData, forKey: .compareToValue)
         try container.encode(objectKeyPath, forKey: .objectKeyPath)
+        try container.encode(valueTypeString, forKey: .valueTypeString)
         if let link = link {
             try container.encode(link, forKey: .link)
             guard let linkedNode else { throw SerialzedQueryNodeError.linkWithoutLinkedNode }
@@ -63,6 +67,7 @@ final class SerializedQueryNode: Codable {
         case objectKeyPath
         case link
         case linkedNode
+        case valueTypeString
     }
 }
 

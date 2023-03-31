@@ -80,12 +80,16 @@ public class QueryNode<U: Queryable>: AnyQueryNode, Identifiable {
     }
     
     private func addLink(with node: AnyQueryNode, link: QueryLink) {
-        if let link = node.link {
-            switch link {
+        // DO NOT REFACTOR
+        // Was done this way because enums are value types
+        if node.link != nil {
+            switch node.link {
             case .and(let node):
                 addLink(with: node, link: link)
             case .or(let node):
                 addLink(with: node, link: link)
+            case .none:
+                return
             }
         } else {
             node.link = link

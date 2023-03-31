@@ -9,7 +9,7 @@ final class QueryBuilderSwiftUITests: XCTestCase {
         queryNode.addNode(keypath: \Article.postedAt, compareTo: Date(), comparator: .greaterThanOrEqual, connectWith: .and)
         assertNumberOfConditions(for: queryNode, equalTo: 3)
     }
-
+    
     func testQuery_2Conditions_And_ExecutesCorrectly() {
         let queryNode = QueryNode(comparator: .greaterThanOrEqual, compareToValue: 100, comparableObject: Article.self, objectKeyPath: \Article.likes)
         queryNode.addNode(keypath: \Article.isStarred, compareTo: true, comparator: .equal, connectWith: .and)
@@ -45,6 +45,16 @@ final class QueryBuilderSwiftUITests: XCTestCase {
         XCTAssertEqual(filteredArticles.count, 1)
         XCTAssertTrue(filteredArticles.allSatisfy({ $0.id == validId}))
     }
+    
+    func testSerialization_Deserialization_ExecutesCorrectly() {
+        do {
+            let queryNode = QueryNode(comparator: .less, compareToValue: 5, comparableObject: Article.self, objectKeyPath: \.likes)
+            let deserializedQueryNode = try queryNode.serialize().deserialize(to: Article.self)
+            assertNodesAreEqual(queryNode, deserializedQueryNode)
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
 }
 
 extension QueryBuilderSwiftUITests {
@@ -57,5 +67,11 @@ extension QueryBuilderSwiftUITests {
         }
         
         XCTAssertEqual(startConditions, conditions)
+    }
+    
+    func assertNodesAreEqual(_ node1: QueryNode<Article>, _ node2: QueryNode<Article>) {
+        XCTAssertEqual(node1.comparator, node2.comparator)
+        XCTAssertEqual(node1.objectKeyPath, node2.objectKeyPath)
+        XCTAssertTrue(node1.compareToValue.evaluate(comparator: .equal, against: node2.compareToValue))
     }
 }
