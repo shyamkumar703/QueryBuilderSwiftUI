@@ -131,9 +131,11 @@ class QueryBuilderViewModel<QueryableElement: Queryable>: ObservableObject {
     }
     
     private func remove(from index: Int) {
-        views.remove(at: index)
-        if index + 1 < views.count {
-            views.remove(at: index + 1)
+        if index + 1 < views.count,
+           case QueryView.connector = views[index + 1] {
+            views.remove(atOffsets: IndexSet(arrayLiteral: index, index + 1))
+        } else if index == views.count - 1, case QueryView.connector = views[index - 1] {
+            views.remove(atOffsets: IndexSet(arrayLiteral: index, index - 1))
         }
     }
 }
@@ -144,26 +146,43 @@ struct QueryBuilderView<QueryableElement: Queryable>: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack {
+            VStack {
+                List {
                     ForEach(viewModel.views) { viewCase in
                         switch viewCase {
                         case .connector(let connector):
                             connector.createView()
+                                .listRowSeparator(.hidden)
+                                .padding(.vertical, 8)
                         case .predicate(let predicate):
                             predicate.createView()
-                        }
-                    }
-                    
-                    AddButton(title: "Add condition") {
-                        withAnimation {
-                            viewModel.views += [
-                                .connector(ConnectorViewModel()),
-                                .predicate(QueryPredicateViewModel<QueryableElement>(elements: viewModel.elements))
-                            ]
+                                .listRowSeparator(.hidden)
+                                .padding(.vertical, 8)
+                                .swipeActions {
+                                    if viewModel.views.count != 1 {
+                                        Button(role: .destructive) {
+                                            viewModel.delete(predicate)
+                                        } label: {
+                                            Label("Delete", systemImage: "trash")
+                                        }
+                                    }
+                                }
                         }
                     }
                 }
+                .listStyle(.plain)
+                
+                AddButton(title: "Add condition") {
+                    withAnimation {
+                        viewModel.views += [
+                            .connector(ConnectorViewModel()),
+                            .predicate(QueryPredicateViewModel<QueryableElement>(elements: viewModel.elements))
+                        ]
+                    }
+                }
+                .padding(.horizontal)
+                
+                Spacer()
             }
             .navigationTitle(viewModel.filterName.isEmpty ? "New filter" : viewModel.filterName)
             .toolbar {
@@ -194,5 +213,24 @@ struct QueryBuilderView<QueryableElement: Queryable>: View {
     func save() {
         viewModel.save()
         dismiss()
+    }
+}
+
+class QueryBuilderViewPreviewsVM: ObservableObject {
+    var allArticles: [Article] = [
+        Article(id: UUID().uuidString, author: "Test1", postedAt: Date(), likes: 50, isStarred: false),
+        Article(id: UUID().uuidString, author: "Test2", postedAt: Date(), likes: 60, isStarred: true)
+    ]
+    @Published var filteredArticles: [Article]?
+    @Published var currentFilter: (String, QueryNode<Article>)?
+    
+    init() {}
+}
+
+struct QueryBuilderView_Previews: PreviewProvider {
+    @ObservedObject static var vm = QueryBuilderViewPreviewsVM()
+    
+    static var previews: some View {
+        QueryBuilderViewModel(currentFilter: $vm.currentFilter, filteredItems: $vm.filteredArticles, elements: vm.allArticles).createView()
     }
 }

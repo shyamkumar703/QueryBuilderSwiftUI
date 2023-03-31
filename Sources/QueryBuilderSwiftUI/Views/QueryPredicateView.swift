@@ -110,7 +110,6 @@ struct QueryPredicateView<QueryableElement: Queryable>: View {
             
         }
         .fixedSize(horizontal: false, vertical: true)
-        .padding()
     }
 }
 

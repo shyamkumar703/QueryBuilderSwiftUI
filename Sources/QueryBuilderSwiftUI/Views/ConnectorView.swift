@@ -37,7 +37,6 @@ struct ConnectorView: View {
             
             Spacer()
         }
-        .padding()
     }
 }
 

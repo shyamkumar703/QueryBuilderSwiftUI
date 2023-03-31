@@ -25,7 +25,6 @@ struct AddButton: View {
             RoundedRectangle(cornerRadius: 8)
                 .foregroundColor(.blue)
         }
-        .padding(.horizontal)
     }
 }
 
