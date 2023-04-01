@@ -75,7 +75,7 @@ class QueryBuilderViewModel<QueryableElement: Queryable>: ObservableObject {
             if case let .connector(cvm) = views[currentIndex - 1],
                case let .predicate(qpv) = views[currentIndex] {
                 node?.addNode(node: qpv.createQueryNode(), connectWith: cvm.queryEval)
-                currentIndex += 1
+                currentIndex += 2
             } else {
                 Logger.log("Found invalid query in QueryBuilder, stopping execution", severity: .error)
                 return
