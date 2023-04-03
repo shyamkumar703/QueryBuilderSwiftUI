@@ -22,6 +22,10 @@ public class QueryBuilderSDK {
         self.externalComparableTypes = array
     }
     
+    public static func evaluate<QueryableElement: Queryable>(node: QueryNode<QueryableElement>, on array: [QueryableElement]) -> [QueryableElement] {
+        return array.filter({ node.evaluate($0) })
+    }
+    
     static func anyComparable(from data: Data, type: String) throws -> (any IsComparable) {
         guard let comparableType = (internalComparableTypes + externalComparableTypes)
             .filter({ String(describing: $0) == type })
@@ -34,13 +38,6 @@ public class QueryBuilderSDK {
         }
         
         return castType
-//        for comparableType in (internalComparableTypes + externalComparableTypes) {
-//            if let castType = try? JSONDecoder().decode(comparableType, from: data) {
-//                return castType
-//            }
-//        }
-//
-//        throw QueryBuilderError.invalidAnyComparable
     }
     
     static func fetchFilters<QueryableElement: Queryable>(for type: QueryableElement.Type) -> [(name: String, node: QueryNode<QueryableElement>)] {
