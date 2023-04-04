@@ -18,17 +18,17 @@ extension Comparable where Self: IsComparable {
         }
         switch comparator {
         case .less:
-            return self < value
+            return value < self
         case .greater:
-            return self > value
+            return value > self
         case .lessThanOrEqual:
-            return self <= value
+            return value <= self
         case .greaterThanOrEqual:
-            return self >= value
+            return value >= self
         case .equal:
-            return self == value
+            return value == self
         case .notEqual:
-            return self != value
+            return value != self
         }
     }
 }

@@ -59,7 +59,7 @@ public class QueryNode<U: Queryable>: AnyQueryNode, Identifiable {
             return false
         }
         let objectValue = objectValueRaw.translateOption()
-        let currentNodeValue = objectValue.evaluate(comparator: comparator, against: compareToValue)
+        let currentNodeValue = compareToValue.evaluate(comparator: comparator, against: objectValue)
         guard let link else { return currentNodeValue }
         switch link {
         case .and(let node): return currentNodeValue && node.evaluate(obj)
