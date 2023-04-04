@@ -55,6 +55,21 @@ final class QueryBuilderSwiftUITests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
     }
+    
+    func testSerialization_Deserialization_RelativeDate_ExecutesCorrectly() {
+        do {
+            let queryNode = QueryNode(comparator: .less, compareToValue: ComparableDate.relativeDate(.yesterday), comparableObject: Article.self, objectKeyPath: \Article.postedAt)
+            let deserializedQueryNode = try queryNode.serialize().deserialize(to: Article.self)
+            guard let nodeCompareToValue = queryNode.compareToValue as? ComparableDate,
+                  let deserializedCompareToValue = deserializedQueryNode.compareToValue as? ComparableDate else {
+                XCTFail("")
+                return
+            }
+            XCTAssertEqual(nodeCompareToValue, deserializedCompareToValue)
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
 }
 
 extension QueryBuilderSwiftUITests {

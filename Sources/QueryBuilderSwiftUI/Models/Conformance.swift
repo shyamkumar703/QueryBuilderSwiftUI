@@ -71,7 +71,7 @@ extension Bool: IsComparable {
 
 extension Date: IsComparable {
     public static func createAssociatedViewModel(options: [(any IsComparable)], startingValue: (any IsComparable)?) -> DateComparableViewModel {
-        DateComparableViewModel(value: startingValue as? Date)
+        DateComparableViewModel(value: startingValue as? ComparableDate)
     }
 }
 extension String: IsComparable {

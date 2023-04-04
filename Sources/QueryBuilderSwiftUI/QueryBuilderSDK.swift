@@ -9,7 +9,7 @@ import Foundation
 
 public class QueryBuilderSDK {
     private static var internalComparableTypes: [(any IsComparable.Type)] = [
-        Date.self,
+        ComparableDate.self,
         String.self,
         Int.self,
         Double.self,
