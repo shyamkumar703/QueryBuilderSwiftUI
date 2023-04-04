@@ -45,13 +45,13 @@ public enum ComparableDate: IsComparable, Equatable {
         
         switch self {
         case .date(let date):
-            return value.evaluate(comparator: comparator, against: date)
+            return date.evaluate(comparator: comparator, against: value)
         case .relativeDate(let relativeDate):
             guard let date = relativeDate.date else {
                 Logger.log("Unable to get date from relative date \(relativeDate), returning false", severity: .error)
                 return false
             }
-            return value.evaluate(comparator: comparator, against: date)
+            return date.evaluate(comparator: comparator, against: value)
         }
     }
     
