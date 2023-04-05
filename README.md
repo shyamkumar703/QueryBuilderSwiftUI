@@ -25,7 +25,6 @@ final class Article: Identifiable, Queryable {
         \Article.likes: Int.self,
         \Article.isStarred: Bool.self
     ]
-    var queryNode: AnyQueryNode? = nil
     
     init(id: String, author: String, postedAt: Date, likes: Int, isStarred: Bool) {
         self.id = id
