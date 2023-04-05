@@ -111,3 +111,66 @@ struct ArticleList: View {
     }
 }
 ```
+
+## IsComparable
+Conforming a data-type to `IsComparable` allows users to add comparisons relative to properties with said data-type into their custom filters. `Date`, `String`, `Int`, `Double`, and `Bool` already conform to `IsComparable`. If you need to add `IsComparable` conformance
+to a custom data-type, follow these steps:
+
+1) Add the conformance to your custom object
+
+```swift
+extension FeedEntry.Status: IsComparable {
+    // Defines valid comparators users can use with this data-type
+    static func getValidComparators() -> [QueryBuilderSwiftUI.Comparator] {
+        [.equal, .notEqual]
+    }
+    
+    // Called on query evaluation, should define comparison behavior
+    func evaluate(comparator: QueryBuilderSwiftUI.Comparator, against value: any IsComparable) -> Bool {
+        guard let value = value as? FeedEntry.Status else {
+            return false
+        }
+        switch comparator {
+        case .less:
+            print("Status comparison does not support <, running != instead")
+            return self != value
+        case .greater:
+            print("Status comparsion does not support >, running != instead")
+            return self != value
+        case .lessThanOrEqual:
+            print("Status comparison does not support <=, running == instead")
+            return self == value
+        case .greaterThanOrEqual:
+            print("Status comparison does not support >=, running == instead")
+            return self == value
+        case .equal:
+            return self == value
+        case .notEqual:
+            return self != value
+        }
+    }
+    
+    // Creates the viewModel that will display the view to the user
+    // StringComparableView, DateComparableView, IntComparableView, BoolComparableView, and DoubleComparableView are BUILT-IN
+    // You can define the translateOption() function to convert your built-in data type to one of the above primitives
+    static func createAssociatedViewModel(options: [(any IsComparable)], startingValue: (any IsComparable)?) -> StringComparableViewModel {
+        return StringComparableViewModel(value: startingValue as? String, options: options)
+    }
+    
+    // Called BEFORE createAssociatedViewModel to transform the custom data-type to a primitive, OPTIONAL
+    func translateOption() -> any IsComparable { rawValue }
+}
+
+2) Declare your custom IsComparable objects in your AppDelegate
+
+```swift
+import QueryBuilderSwiftUI
+import UIKit
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        QueryBuilderSDK.setComparableTypes(to: [FeedEntry.Status.self, Feed.self])
+        return true
+    }
+}
+```
