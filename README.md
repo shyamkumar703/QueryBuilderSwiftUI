@@ -3,6 +3,8 @@
 
 QueryBuilder iOS allows users to directly interact with properties of objects you've exposed. Users can create their own custom ways to see only the data they're interested in without API access. This means that users can more effectively serve themselves without API access.
 
+![](https://github.com/shyamkumar703/QueryBuilderSwiftUI/blob/e0854875806eb3cc4f4619638baef9abd084e067/Kit/qb_example.gif)
+
 ## Queryable
 A protocol that exposes data-model properties for user interaction. Here's how you define a `Queryable` object:
 
