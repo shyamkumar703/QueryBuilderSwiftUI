@@ -160,6 +160,7 @@ extension FeedEntry.Status: IsComparable {
     // Called BEFORE createAssociatedViewModel to transform the custom data-type to a primitive, OPTIONAL
     func translateOption() -> any IsComparable { rawValue }
 }
+```
 
 2) Declare your custom IsComparable objects in your AppDelegate
 
