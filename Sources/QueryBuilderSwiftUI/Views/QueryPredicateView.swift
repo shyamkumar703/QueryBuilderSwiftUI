@@ -46,7 +46,7 @@ class QueryPredicateViewModel<QueryableElement: Queryable>: ObservableObject, Id
             return EmptyComparableViewModel().createView()
         }
         
-        let vm = type.createAssociatedViewModel(options: options, startingValue: nil)
+        let vm = type.createAssociatedViewModel(options: options, startingValue: options.randomElement())
         cachedVMs[cacheKey] = vm
         return vm.createView()
     }
