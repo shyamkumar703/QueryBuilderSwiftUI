@@ -32,7 +32,7 @@ class QueryPredicateViewModel<QueryableElement: Queryable>: ObservableObject, Id
     private var cachedVMs = [String: any ComparableViewModel]()
     
     var comparatorView: any ComparableView {
-        let cacheKey = "\(queryableParam)"
+        let cacheKey = QueryableElement.stringFor(queryableParam)
         if let vm = cachedVMs[cacheKey] {
             return vm.createView()
         }
@@ -69,7 +69,7 @@ class QueryPredicateViewModel<QueryableElement: Queryable>: ObservableObject, Id
         self.selectedComparator = node.comparator
         
         if let type = QueryableElement.queryableParameters[queryableParam] {
-            let cacheKey = "\(queryableParam)"
+            let cacheKey = QueryableElement.stringFor(queryableParam)
             cachedVMs[cacheKey] = type.createAssociatedViewModel(options: options, startingValue: node.compareToValue)
         }
     }
