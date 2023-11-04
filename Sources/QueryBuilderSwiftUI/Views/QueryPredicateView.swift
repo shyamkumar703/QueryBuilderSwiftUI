@@ -32,22 +32,23 @@ class QueryPredicateViewModel<QueryableElement: Queryable>: ObservableObject, Id
     private var cachedVMs = [String: any ComparableViewModel]()
     
     var comparatorView: any ComparableView {
-        if let type = QueryableElement.queryableParameters[queryableParam] {
-            let cacheKey = String(describing: type)
-            if let vm = cachedVMs[cacheKey] {
-                return vm.createView()
-            } else {
-                let vm = type.createAssociatedViewModel(options: options, startingValue: nil)
-                cachedVMs[cacheKey] = vm
-                return vm.createView()
-            }
-        } else {
+        let cacheKey = "\(queryableParam)"
+        if let vm = cachedVMs[cacheKey] {
+            return vm.createView()
+        }
+        
+        guard let type = QueryableElement.queryableParameters[queryableParam] else {
             Logger.log(
                 "Issue encountered when attempting to create a ComparableView, showing `EmptyComparableView instead",
                 severity: .warning
             )
+            
             return EmptyComparableViewModel().createView()
         }
+        
+        let vm = type.createAssociatedViewModel(options: options, startingValue: nil)
+        cachedVMs[cacheKey] = vm
+        return vm.createView()
     }
     
     var options: [any IsComparable] {
@@ -68,7 +69,7 @@ class QueryPredicateViewModel<QueryableElement: Queryable>: ObservableObject, Id
         self.selectedComparator = node.comparator
         
         if let type = QueryableElement.queryableParameters[queryableParam] {
-            let cacheKey = String(describing: type)
+            let cacheKey = "\(queryableParam)"
             cachedVMs[cacheKey] = type.createAssociatedViewModel(options: options, startingValue: node.compareToValue)
         }
     }
