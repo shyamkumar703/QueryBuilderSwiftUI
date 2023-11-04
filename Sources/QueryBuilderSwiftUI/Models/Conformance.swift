@@ -75,8 +75,38 @@ extension Date: IsComparable {
     }
 }
 extension String: IsComparable {
+    public static func getValidComparators() -> [QueryBuilderSwiftUI.Comparator] {
+        [.equal, .notEqual]
+    }
+    
     public static func createAssociatedViewModel(options: [(any IsComparable)], startingValue: (any IsComparable)?) -> StringComparableViewModel {
         return StringComparableViewModel(value: startingValue as? String, options: options)
+    }
+    
+    public func evaluate(comparator: QueryBuilderSwiftUI.Comparator, against value: any IsComparable) -> Bool {
+        guard let value = value as? String else {
+            Logger.log("Value \(value) passed into `evaluate` is not a string, returning false", severity: .error)
+            return false
+        }
+
+        switch comparator {
+        case .less:
+            Logger.log("String comparison does not support <, running != instead", severity: .warning)
+            return self != value
+        case .greater:
+            Logger.log("String comparsion does not support >, running != instead", severity: .warning)
+            return self != value
+        case .lessThanOrEqual:
+            Logger.log("String comparison does not support <=, running == instead", severity: .warning)
+            return self == value
+        case .greaterThanOrEqual:
+            Logger.log("String comparison does not support >=, running == instead", severity: .warning)
+            return self == value
+        case .equal:
+            return self == value
+        case .notEqual:
+            return self != value
+        }
     }
 }
 extension Int: IsComparable {
